@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B1030">
+<title>Rhythm</title>
+<style>
+:root{--ink:#0B1030;--pan:#141B42;--ln:#222B5E;--ice:#DCE6FF;--mut:#7C86B8;--sig:#FFB627;--fast:#29D9C2;--slow:#FF6B8B}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--ink);color:var(--ice);font-family:system-ui,Roboto,sans-serif;overflow:hidden}
+body{background:radial-gradient(120% 60% at 50% -10%,#2b2a78 0%,transparent 60%),linear-gradient(#0B1030,#070A1E)}
+.num{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+main{height:100%;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 92px)}
+.view{display:none}.view.on{display:block}
+.top{display:flex;align-items:center;gap:10px}
+#name{flex:1;min-width:0;background:none;border:0;border-bottom:2px solid var(--ln);color:var(--ice);font:700 24px system-ui;padding:6px 0}
+#name:focus{outline:0;border-color:var(--sig)}#name:disabled{border-color:transparent}
+.led{width:44px;height:44px;border-radius:50%;border:2px solid var(--ln);background:var(--pan);color:var(--mut);font-size:18px}
+.led.s1{border-color:var(--sig);color:var(--sig);animation:br 1.2s infinite}.led.s2{border-color:var(--fast);color:var(--fast);box-shadow:0 0 14px #29D9C255}
+@keyframes br{50%{opacity:.35}}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:12px 0 0;padding-bottom:2px}
+.chip{flex:none;border:1px solid var(--ln);background:none;color:var(--mut);border-radius:99px;padding:6px 13px;font:inherit;font-size:13px}
+.chip.sel{background:var(--ice);color:var(--ink);border-color:var(--ice)}
+.hero{text-align:center;margin:26px 0 6px}
+.lab{color:var(--mut);font-size:13px}
+.big{font:200 clamp(84px,27vw,128px)/1 sans-serif-condensed,"Arial Narrow",system-ui;letter-spacing:-3px;transition:color .6s,transform .25s}
+.big.hit{color:var(--sig);transform:scale(1.05);transition:none}
+.prev{color:var(--mut);font-size:14px;min-height:20px}
+#strip{width:100%;height:92px;margin:10px 0}
+#strip .nw{animation:up .4s ease-out}@keyframes up{from{transform:translateY(20px);opacity:0}}
+.trio{display:grid;grid-template-columns:1fr 1.5fr 1fr;border-block:1px solid var(--ln);padding:12px 0;text-align:center}
+.trio small{display:block;color:var(--mut);font-size:12px}.trio b{font:600 22px system-ui}
+.act{display:flex;align-items:center;justify-content:center;gap:26px;margin-top:24px}
+.orb{width:92px;height:92px;border-radius:50%;border:3px solid var(--sig);background:var(--sig);color:var(--ink);font:800 17px system-ui}
+.orb.run{background:none;color:var(--sig);animation:glow 2s infinite}
+@keyframes glow{50%{box-shadow:0 0 0 12px #FFB62722}}
+.ghost{background:none;border:0;color:var(--mut);font:inherit;padding:10px}.ghost:disabled{opacity:.3}
+#rip{position:fixed;left:50%;top:34%;width:16px;height:16px;margin:-8px;border:2px solid var(--sig);border-radius:50%;opacity:0;pointer-events:none}
+#rip.go{animation:rp .8s ease-out}@keyframes rp{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(30)}}
+h2{font-size:14px;color:var(--mut);margin:22px 0 10px;font-weight:600}
+.sb{position:relative;display:flex;justify-content:space-between;padding:10px 12px;border-radius:12px;overflow:hidden;background:var(--pan);margin-bottom:6px}
+.sb i{position:absolute;inset:0 auto 0 0;background:#3b3f9f66}.sb span,.sb b{position:relative}
+.hi{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--ln);padding:12px 0}
+.hi div{flex:1;min-width:0}.hi small{display:block;color:var(--mut)}
+.hi button{background:var(--pan);border:0;color:var(--ice);border-radius:10px;padding:9px 12px;font-size:15px}
+.mut{color:var(--mut)}
+.card{background:var(--pan);border-radius:16px;padding:14px;margin-bottom:10px}
+.btn{width:100%;border:0;border-radius:14px;padding:14px;background:var(--sig);color:var(--ink);font:700 16px system-ui}
+#term{direction:ltr;text-align:left;background:#060818;border-radius:12px;height:170px;overflow:auto;padding:10px;font:12px/1.5 monospace;color:#8fe9d6;white-space:pre-wrap}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.row .chip{color:var(--ice)}
+form{display:flex;gap:6px}form input{flex:1;min-width:0;background:var(--pan);border:1px solid var(--ln);border-radius:12px;color:var(--ice);padding:11px;font:16px monospace;direction:ltr}
+nav{position:fixed;inset:auto 0 0 0;display:flex;background:#0b1030ee;border-top:1px solid var(--ln);padding:6px 10px calc(env(safe-area-inset-bottom,0px) + 6px)}
+nav button{flex:1;background:none;border:0;color:var(--mut);font:600 13px system-ui;padding:8px}nav button.on{color:var(--sig)}
+.md{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;z-index:9}.md.on{display:flex}
+.md>div{width:100%;background:var(--pan);border-radius:22px 22px 0 0;padding:22px;display:grid;gap:10px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ice);color:var(--ink);padding:10px 16px;border-radius:99px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:10}#toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+<section class="view on" id="v-ses">
+  <div class="top"><input id="name" placeholder="اسم المادة" maxlength="30" autocomplete="off"><button class="led" id="led" aria-label="البلوتوث">ᛒ</button></div>
+  <div class="chips" id="chips"></div>
+  <div class="hero"><div class="lab">من آخر ضغطة</div><div class="big num" id="big">--</div><div class="prev num" id="prev"></div></div>
+  <svg id="strip" viewBox="0 0 320 90" preserveAspectRatio="none"></svg>
+  <div class="trio"><div><small>ضغطات</small><b class="num" id="cnt">0</b></div><div><small>الوقت الإجمالي</small><b class="num" id="tot">0:00:00</b></div><div><small>المتوسط</small><b class="num" id="avg">-</b></div></div>
+  <div class="act"><button class="ghost" id="rst" disabled>صفّر</button><button class="orb" id="go">ابدأ</button><button class="ghost" id="min" disabled style="visibility:hidden"></button></div>
+</section>
+<section class="view" id="v-his"><h2>وقت المذاكرة لكل مادة</h2><div id="subtot"></div><h2>الجلسات</h2><div id="hist"></div></section>
+<section class="view" id="v-dev">
+  <div class="card"><b id="dst">غير متصل</b><p class="mut" style="margin:6px 0 12px">الجهاز اسمه ClickCnt. التطبيق بيدوّر عليه ويتوصل لوحده.</p><button class="btn" id="conn">اتصل</button></div>
+  <h2>سيريال الجهاز</h2><div id="term"></div>
+  <div class="row" id="q"><button class="chip" data-c="STATUS">STATUS</button><button class="chip" data-c="COUNT">COUNT</button><button class="chip" data-c="READ_LOG">READ_LOG</button><button class="chip" data-c="PAIR">PAIR</button><button class="chip" id="clr" style="color:var(--slow)">مسح لوج الجهاز</button></div>
+  <form id="tf"><input id="cmd" placeholder="HELP" autocapitalize="characters"><button class="chip" style="color:var(--ice)">إرسال</button></form>
+</section>
+</main>
+<i id="rip"></i>
+<nav id="nav"><button class="on" data-v="v-ses">الجلسة</button><button data-v="v-his">السجل</button><button data-v="v-dev">الجهاز</button></nav>
+<div class="md" id="md"><div><b id="mt"></b><button class="btn" data-a="cont">كمّل على القديمة</button><button class="btn" style="background:var(--ln);color:var(--ice)" data-a="new">جلسة جديدة</button><button class="ghost" data-a="x">إلغاء</button></div></div>
+<div id="toast"></div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
